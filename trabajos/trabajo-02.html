@@ -1,137 +1,203 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trabajo 02 - Arquitecturas de Software</title>
-  <style>
-    :root{--blue:#1f3c88;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--link:#1f3c88;--th:#eef2ff;}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:#fff;}
-    header{background:var(--blue);color:#fff;padding:22px 18px;text-align:center;}
-    header h1{margin:0;font-size:22px;}
-    header p{margin:8px 0 0;opacity:.95;}
-    main{max-width:900px;margin:0 auto;padding:22px 18px 30px;}
-    a{color:var(--link);font-weight:700;text-decoration:none;}
-    a:hover{text-decoration:underline;}
-    h2{font-size:16px;margin:18px 0 8px;color:#0f1f4a;}
-    ul,ol{margin:6px 0 6px 18px;}
-    table{width:100%;border-collapse:collapse;margin-top:10px;}
-    th,td{border:1px solid var(--border);padding:8px;font-size:13px;vertical-align:top;}
-    th{background:var(--th);text-align:left;}
-    .muted{color:var(--muted);}
-    .box{border:1px solid var(--border);border-radius:10px;padding:14px;margin:14px 0;background:#fafafa;}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trabajo 02 - Arquitecturas de Software</title>
+
+<style>
+:root{
+  --blue:#1f3c88;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --link:#1f3c88;
+  --th:#eef2ff;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:#ffffff;
+  color:var(--text);
+  line-height:1.6;
+}
+
+header{
+  background:var(--blue);
+  color:white;
+  padding:28px 18px;
+  text-align:center;
+}
+
+header h1{
+  margin:0;
+  font-size:28px;   /* Cabecera principal más visible */
+}
+
+header p{
+  margin-top:8px;
+  font-size:16px;
+  opacity:0.95;
+}
+
+main{
+  max-width:900px;  /* Controla ancho de lectura */
+  margin:0 auto;
+  padding:30px 20px 40px;
+}
+
+a{
+  color:var(--link);
+  font-weight:600;
+  text-decoration:none;
+}
+
+a:hover{
+  text-decoration:underline;
+}
+
+h2{
+  font-size:20px;   /* Cabeceras normales */
+  margin-top:32px;
+  margin-bottom:10px;
+  color:#0f1f4a;
+}
+
+ul, ol{
+  margin-left:22px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  font-size:14px;
+}
+
+th, td{
+  border:1px solid var(--border);
+  padding:10px;
+  vertical-align:top;
+}
+
+th{
+  background:var(--th);
+  text-align:left;
+  font-weight:600;
+}
+
+.box{
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:16px;
+  margin-top:20px;
+  background:#fafafa;
+}
+
+.muted{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:10px;
+}
+</style>
 </head>
+
 <body>
 
-  <header>
-    <h1>Trabajo en Clase 02</h1>
-    <p>Informe Comparativo de 12 Arquitecturas de Software (sin exposición)</p>
-  </header>
+<header>
+  <h1>Trabajo en Clase 02</h1>
+  <p>Informe Comparativo de 12 Arquitecturas de Software</p>
+</header>
 
-  <main>
-    <p><a href="../index.html">← Volver al listado</a></p>
+<main>
 
-    <div class="box">
-      <p><strong>Modalidad:</strong> Grupal (3–4 estudiantes)</p>
-      <p><strong>Entrega:</strong> Un (1) informe en PDF por grupo</p>
-    </div>
+<p><a href="../index.html">← Volver al listado</a></p>
 
-    <h2>1. Objetivo</h2>
-    <p>
-      Analizar comparativamente 12 arquitecturas de software, evaluando atributos de calidad,
-      ventajas, limitaciones y aplicabilidad en un sistema real.
-    </p>
+<div class="box">
+  <p><strong>Modalidad:</strong> Grupal (2–4 estudiantes)</p>
+  <p><strong>Entrega:</strong> Un (1) informe en PDF por grupo</p>
+</div>
 
-    <h2>2. Arquitecturas a investigar (12)</h2>
-    <ul>
-      <li>Arquitectura en Capas</li>
-      <li>Cliente–Servidor</li>
-      <li>Monolítica</li>
-      <li>SOA</li>
-      <li>Microservicios</li>
-      <li>Hexagonal (Ports & Adapters)</li>
-      <li>Clean Architecture</li>
-      <li>Basada en Componentes</li>
-      <li>Orientada a Eventos (EDA)</li>
-      <li>MVC</li>
-      <li>DDD</li>
-      <li>Serverless</li>
-    </ul>
+<h2>1. Objetivo</h2>
+<p>
+Analizar comparativamente 12 arquitecturas de software, evaluando atributos de calidad,
+ventajas, limitaciones y aplicabilidad en un sistema real.
+</p>
 
-    <h2>3. Estructura obligatoria del informe</h2>
-    <ol>
-      <li><strong>Introducción:</strong> importancia de la arquitectura + mínimo 5 atributos de calidad.</li>
-      <li><strong>Desarrollo:</strong> una sección por arquitectura con:
-        <ul>
-          <li>Definición y principios</li>
-          <li>Estructura (componentes + comunicación) + <strong>diagrama propio</strong></li>
-          <li>Ventajas y desventajas</li>
-          <li>Casos de uso</li>
-          <li>Cuándo NO usarla</li>
-        </ul>
-      </li>
-      <li><strong>Tabla comparativa general</strong> (12 arquitecturas con criterios homogéneos).</li>
-      <li><strong>Caso aplicado:</strong> Sistema Académico (API REST) propuesto en:
-        <ul>
-          <li>Capas</li>
-          <li>Hexagonal</li>
-          <li>Microservicios</li>
-        </ul>
-        y recomendación final argumentada.
-      </li>
-      <li><strong>Conclusiones</strong> y <strong>Referencias</strong> (APA).</li>
-    </ol>
+<h2>2. Arquitecturas a investigar</h2>
+<ul>
+<li>Arquitectura en Capas</li>
+<li>Cliente–Servidor</li>
+<li>Monolítica</li>
+<li>SOA</li>
+<li>Microservicios</li>
+<li>Hexagonal (Ports & Adapters)</li>
+<li>Clean Architecture</li>
+<li>Basada en Componentes</li>
+<li>Orientada a Eventos (EDA)</li>
+<li>MVC</li>
+<li>DDD</li>
+<li>Serverless</li>
+</ul>
 
-    <h2>4. Entregables</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Entregable</th>
-          <th>Formato</th>
-          <th>Detalle mínimo</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>E1. Informe técnico</strong></td>
-          <td>PDF</td>
-          <td>8–12 páginas (sin contar portada y referencias), redacción académica, APA.</td>
-        </tr>
-        <tr>
-          <td><strong>E2. Diagramas</strong></td>
-          <td>Incluidos en el PDF</td>
-          <td>12 diagramas (1 por arquitectura) + 3 del caso aplicado.</td>
-        </tr>
-        <tr>
-          <td><strong>E3. Tabla comparativa</strong></td>
-          <td>Dentro del informe</td>
-          <td>
-            Mínimo: acoplamiento, escalabilidad, complejidad, mantenibilidad, despliegue,
-            observabilidad, tolerancia a fallos, casos ideales.
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<h2>3. Estructura obligatoria del informe</h2>
+<ol>
+<li><strong>Introducción:</strong> mínimo 5 atributos de calidad.</li>
+<li><strong>Desarrollo:</strong> una sección por arquitectura con:
+  <ul>
+    <li>Definición y principios</li>
+    <li>Estructura + diagrama propio</li>
+    <li>Ventajas y desventajas</li>
+    <li>Casos de uso</li>
+    <li>Cuándo NO usarla</li>
+  </ul>
+</li>
+<li><strong>Tabla comparativa general.</strong></li>
+<li><strong>Caso aplicado:</strong> Sistema Académico en Capas, Hexagonal y Microservicios.</li>
+<li><strong>Conclusiones y referencias APA.</strong></li>
+</ol>
 
-    <h2>5. Rúbrica</h2>
-    <table>
-      <thead><tr><th>Criterio</th><th>Peso</th></tr></thead>
-      <tbody>
-        <tr><td>Claridad conceptual</td><td>20%</td></tr>
-        <tr><td>Profundidad técnica</td><td>25%</td></tr>
-        <tr><td>Comparación crítica</td><td>25%</td></tr>
-        <tr><td>Caso aplicado</td><td>20%</td></tr>
-        <tr><td>Calidad formal</td><td>10%</td></tr>
-      </tbody>
-    </table>
+<h2>4. Entregables</h2>
 
-    <p class="muted" style="margin-top:12px;">
-      Nota: Los diagramas deben ser elaborados por el grupo (no copiar imágenes).
-    </p>
+<table>
+<tr>
+<th>Entregable</th>
+<th>Formato</th>
+<th>Detalle mínimo</th>
+</tr>
+<tr>
+<td><strong>Informe técnico</strong></td>
+<td>PDF</td>
+<td>8–12 páginas, redacción académica, APA.</td>
+</tr>
+<tr>
+<td><strong>Diagramas</strong></td>
+<td>Incluidos en el PDF</td>
+<td>12 arquitecturas + 3 del caso aplicado.</td>
+</tr>
+<tr>
+<td><strong>Tabla comparativa</strong></td>
+<td>Dentro del informe</td>
+<td>Criterios técnicos homogéneos.</td>
+</tr>
+</table>
 
-  </main>
+<h2>5. Rúbrica</h2>
+
+<table>
+<tr><th>Criterio</th><th>Peso</th></tr>
+<tr><td>Claridad conceptual</td><td>20%</td></tr>
+<tr><td>Profundidad técnica</td><td>25%</td></tr>
+<tr><td>Comparación crítica</td><td>25%</td></tr>
+<tr><td>Caso aplicado</td><td>20%</td></tr>
+<tr><td>Calidad formal</td><td>10%</td></tr>
+</table>
+
+
+</main>
 
 </body>
 </html>
