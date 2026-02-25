@@ -1,37 +1,142 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ingeniería de Software III - Trabajos</title>
-<link rel="stylesheet" href="assets/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ingeniería de Software III - Trabajos</title>
+  <style>
+    :root{
+      --blue:#1f3c88;
+      --blue2:#16306d;
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --border:#d9dde6;
+      --text:#111827;
+      --muted:#6b7280;
+      --link:#1f3c88;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+    header{
+      background:var(--blue);
+      color:#fff;
+      padding:38px 18px;
+      text-align:center;
+    }
+    header h1{
+      margin:0;
+      font-size:34px;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+    header p{
+      margin:10px 0 0;
+      font-size:16px;
+      opacity:.95;
+    }
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:26px 18px 34px;
+    }
+    h2{
+      margin:0 0 16px;
+      font-size:22px;
+      font-weight:700;
+      color:#111827;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap:18px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:18px 18px 16px;
+      box-shadow:0 1px 2px rgba(0,0,0,.04);
+      min-height:112px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .card h3{
+      margin:0 0 10px;
+      font-size:18px;
+      color:var(--blue2);
+      font-weight:700;
+    }
+    .card .meta{
+      margin:0 0 10px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
+    .card a{
+      color:var(--link);
+      text-decoration:none;
+      font-weight:700;
+      font-size:15px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width:max-content;
+    }
+    .card a:hover{ text-decoration:underline; }
+    footer{
+      text-align:center;
+      padding:18px 12px 22px;
+      color:var(--muted);
+      font-size:13px;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="container">
+  <header>
+    <h1>Ingeniería de Software III</h1>
+    <p>Repositorio oficial de Trabajos en Clase</p>
+  </header>
 
-  <aside class="sidebar">
-    <h2>ISW III</h2>
-    <p class="subtitle">Trabajos en Clase</p>
+  <main>
+    <h2>Trabajos disponibles</h2>
 
-    <nav>
-      <a onclick="loadPage('trabajos/trabajo-01.html')">Trabajo 1</a>
-      <a onclick="loadPage('trabajos/trabajo-02.html')">Trabajo 2</a>
-      <a onclick="loadPage('trabajos/trabajo-03.html')">Trabajo 3</a>
-    </nav>
+    <div class="grid">
+      <div class="card">
+        <div>
+          <h3>Trabajo 01</h3>
+          <p class="meta">Plantilla/guía del informe (Grupo G1). Ya realizado.</p>
+        </div>
+        <a href="trabajos/trabajo-01.html">Abrir trabajo →</a>
+      </div>
 
-    <div class="footer">
-      Bucaramanga • 2026
+      <div class="card">
+        <div>
+          <h3>Trabajo 02</h3>
+          <p class="meta">Informe comparativo: 12 arquitecturas de software (sin exposición).</p>
+        </div>
+        <a href="trabajos/trabajo-02.html">Abrir trabajo →</a>
+      </div>
+
+      <!-- Duplica estas tarjetas para Trabajo 03 en adelante -->
+      <!--
+      <div class="card">
+        <div>
+          <h3>Trabajo 03</h3>
+          <p class="meta">Descripción corta del trabajo 03.</p>
+        </div>
+        <a href="trabajos/trabajo-03.html">Abrir trabajo →</a>
+      </div>
+      -->
     </div>
-  </aside>
-
-  <main class="content">
-    <iframe id="contentFrame" src="trabajos/trabajo-01.html"></iframe>
   </main>
 
-</div>
-
-<script src="js/content.js"></script>
+  <footer>© Ingeniería de Software III</footer>
 </body>
 </html>
