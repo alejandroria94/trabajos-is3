@@ -1,75 +1,389 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trabajo ## - Ingeniería de Software III</title>
-  <style>
-    :root{--blue:#1f3c88;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--link:#1f3c88;--th:#eef2ff;}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:#fff;}
-    header{background:var(--blue);color:#fff;padding:22px 18px;text-align:center;}
-    header h1{margin:0;font-size:22px;}
-    header p{margin:8px 0 0;opacity:.95;}
-    main{max-width:900px;margin:0 auto;padding:22px 18px 30px;}
-    a{color:var(--link);font-weight:700;text-decoration:none;}
-    a:hover{text-decoration:underline;}
-    h2{font-size:16px;margin:18px 0 8px;color:#0f1f4a;}
-    ul,ol{margin:6px 0 6px 18px;}
-    table{width:100%;border-collapse:collapse;margin-top:10px;}
-    th,td{border:1px solid var(--border);padding:8px;font-size:13px;vertical-align:top;}
-    th{background:var(--th);text-align:left;}
-    .muted{color:var(--muted);}
-    .box{border:1px solid var(--border);border-radius:10px;padding:14px;margin:14px 0;background:#fafafa;}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trabajo en Clase 03 - Contenerización con Docker</title>
+
+<style>
+:root{
+  --blue:#1f3c88;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --link:#1f3c88;
+  --th:#eef2ff;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:#ffffff;
+  color:var(--text);
+  line-height:1.6;
+}
+
+header{
+  background:var(--blue);
+  color:white;
+  padding:28px 18px;
+  text-align:center;
+}
+
+header h1{
+  margin:0;
+  font-size:28px;
+}
+
+header p{
+  margin-top:8px;
+  font-size:16px;
+  opacity:0.95;
+}
+
+main{
+  max-width:900px;
+  margin:0 auto;
+  padding:30px 20px 40px;
+}
+
+a{
+  color:var(--link);
+  font-weight:600;
+  text-decoration:none;
+}
+
+a:hover{
+  text-decoration:underline;
+}
+
+h2{
+  font-size:20px;
+  margin-top:32px;
+  margin-bottom:10px;
+  color:#0f1f4a;
+}
+
+ul, ol{
+  margin-left:22px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  font-size:14px;
+}
+
+th, td{
+  border:1px solid var(--border);
+  padding:10px;
+  vertical-align:top;
+}
+
+th{
+  background:var(--th);
+  text-align:left;
+  font-weight:600;
+}
+
+.box{
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:16px;
+  margin-top:20px;
+  background:#fafafa;
+}
+
+code{
+  background:#f4f4f4;
+  padding:3px 6px;
+  border-radius:4px;
+  font-size:13px;
+}
+
+pre{
+  background:#f4f4f4;
+  padding:12px;
+  border-radius:6px;
+  overflow-x:auto;
+}
+
+.muted{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:10px;
+}
+</style>
 </head>
+
 <body>
 
-  <header>
-    <h1>Trabajo en Clase ##</h1>
-    <p>Título corto del trabajo</p>
-  </header>
+<header>
+  <h1>Trabajo en Clase 03</h1>
+  <p>Contenerización de una aplicación con Docker</p>
+</header>
 
-  <main>
-    <p><a href="../index.html">← Volver al listado</a></p>
+<main>
 
-    <div class="box">
-      <p><strong>Modalidad:</strong> Individual / Grupal</p>
-      <p><strong>Entrega:</strong> (PDF / repositorio / enlace, etc.)</p>
-      <p><strong>Fecha límite:</strong> (opcional)</p>
-    </div>
+<p><a href="../index.html">← Volver al listado</a></p>
 
-    <h2>1. Objetivo</h2>
-    <p>...</p>
+<div class="box">
+  <p><strong>Modalidad:</strong> Trabajo en parejas</p>
+  <p><strong>Duración:</strong> 90 minutos</p>
+  <p><strong>Entrega:</strong> Capturas de pantalla + breve reflexión</p>
+</div>
 
-    <h2>2. Instrucciones</h2>
-    <ol>
-      <li>...</li>
-      <li>...</li>
-      <li>...</li>
-    </ol>
+<h2>1. Objetivo</h2>
 
-    <h2>3. Entregables</h2>
-    <table>
-      <thead><tr><th>Entregable</th><th>Formato</th><th>Detalle mínimo</th></tr></thead>
-      <tbody>
-        <tr><td><strong>E1.</strong> ...</td><td>PDF</td><td>...</td></tr>
-      </tbody>
-    </table>
+<p>
+Comprender el uso de Docker como herramienta para empaquetar aplicaciones,
+garantizando portabilidad, reproducibilidad y consistencia entre entornos de desarrollo,
+pruebas y producción.
+</p>
 
-    <h2>4. Rúbrica</h2>
-    <table>
-      <thead><tr><th>Criterio</th><th>Peso</th></tr></thead>
-      <tbody>
-        <tr><td>Claridad</td><td>25%</td></tr>
-        <tr><td>Profundidad</td><td>25%</td></tr>
-        <tr><td>Aplicación</td><td>25%</td></tr>
-        <tr><td>Presentación</td><td>25%</td></tr>
-      </tbody>
-    </table>
+<h2>2. Contexto de Ingeniería de Software</h2>
 
-    <p class="muted" style="margin-top:12px;">Nota: Ajusta criterios y pesos según tu evaluación.</p>
-  </main>
+<p>
+Uno de los problemas más comunes en el desarrollo de software es la inconsistencia entre
+entornos de ejecución.
+</p>
+
+<div class="box">
+<p><strong>Ejemplo típico:</strong></p>
+
+<ul>
+<li>En el computador del desarrollador funciona correctamente</li>
+<li>En el servidor de pruebas aparecen errores de configuración</li>
+<li>En producción existen dependencias diferentes</li>
+</ul>
+</div>
+
+<p>
+Docker permite resolver este problema empaquetando la aplicación y su entorno
+de ejecución dentro de un <strong>contenedor</strong>.
+</p>
+
+<h2>3. Conceptos fundamentales</h2>
+
+<table>
+<tr>
+<th>Concepto</th>
+<th>Descripción</th>
+</tr>
+
+<tr>
+<td>Imagen</td>
+<td>Plantilla que contiene el sistema base, dependencias y aplicación.</td>
+</tr>
+
+<tr>
+<td>Contenedor</td>
+<td>Instancia en ejecución de una imagen.</td>
+</tr>
+
+<tr>
+<td>Dockerfile</td>
+<td>Archivo que define cómo construir una imagen.</td>
+</tr>
+
+<tr>
+<td>Puerto</td>
+<td>Permite acceder a la aplicación desde fuera del contenedor.</td>
+</tr>
+
+<tr>
+<td>Volumen</td>
+<td>Mecanismo para persistir datos generados por la aplicación.</td>
+</tr>
+
+</table>
+
+<h2>4. Paso 1 — Verificar instalación de Docker</h2>
+
+<p>Ejecutar en la terminal:</p>
+
+<pre>
+docker --version
+</pre>
+
+<p>Luego verificar que Docker esté ejecutándose:</p>
+
+<pre>
+docker info
+</pre>
+
+<h2>5. Paso 2 — Compilar la aplicación</h2>
+
+<p>Ubíquese en el directorio del proyecto y ejecute:</p>
+
+<pre>
+mvn clean package
+</pre>
+
+<p>Este comando genera el archivo compilado en:</p>
+
+<pre>
+target/demoacademico.jar
+</pre>
+
+<h2>6. Paso 3 — Crear el Dockerfile</h2>
+
+<p>Crear un archivo llamado <strong>Dockerfile</strong> con el siguiente contenido:</p>
+
+<pre>
+FROM eclipse-temurin:21-jdk
+
+RUN mkdir -p /opt/demo-academico
+
+ENV TZ="America/Bogota"
+ENV WORKSPACE /opt/demo-academico
+
+WORKDIR ${WORKSPACE}
+
+COPY target/*.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java","-Xmx1024m","-jar","app.jar"]
+</pre>
+
+<h2>7. Paso 4 — Construir la imagen</h2>
+
+<p>Ejecutar:</p>
+
+<pre>
+docker build -t demoacademico .
+</pre>
+
+<p>Luego verificar las imágenes disponibles:</p>
+
+<pre>
+docker images
+</pre>
+
+<h2>8. Paso 5 — Ejecutar el contenedor</h2>
+
+<p>Ejecutar el siguiente comando:</p>
+
+<pre>
+docker run -d -p 8080:8080 --name demoacademico demoacademico
+</pre>
+
+<p>Explicación de parámetros:</p>
+
+<table>
+
+<tr>
+<th>Parámetro</th>
+<th>Descripción</th>
+</tr>
+
+<tr>
+<td>-d</td>
+<td>Ejecuta el contenedor en segundo plano.</td>
+</tr>
+
+<tr>
+<td>-p 8080:8080</td>
+<td>Mapea el puerto del contenedor al host.</td>
+</tr>
+
+<tr>
+<td>--name</td>
+<td>Nombre del contenedor.</td>
+</tr>
+
+<tr>
+<td>demoacademico</td>
+<td>Imagen utilizada.</td>
+</tr>
+
+</table>
+
+<h2>9. Paso 6 — Verificar ejecución</h2>
+
+<p>Ejecutar:</p>
+
+<pre>
+docker ps
+</pre>
+
+<p>Luego abrir en el navegador:</p>
+
+<pre>
+http://localhost:8080
+</pre>
+
+<h2>10. Paso 7 — Visualizar logs</h2>
+
+<pre>
+docker logs demoacademico
+</pre>
+
+<p>Este comando permite observar el proceso de arranque del servicio.</p>
+
+<h2>11. Discusión</h2>
+
+Responder en grupo:
+
+<ol>
+
+<li>¿Cuál es la diferencia entre una <strong>imagen</strong> y un <strong>contenedor</strong>?</li>
+
+<li>¿Qué problema de ingeniería de software soluciona Docker?</li>
+
+<li>¿Por qué Docker es importante en arquitecturas basadas en microservicios?</li>
+
+<li>¿Qué ventajas ofrece Docker frente a ejecutar la aplicación directamente en el sistema operativo?</li>
+
+</ol>
+
+<h2>12. Entregables</h2>
+
+<table>
+
+<tr>
+<th>Entregable</th>
+<th>Formato</th>
+<th>Detalle mínimo</th>
+</tr>
+
+<tr>
+<td>Captura construcción imagen</td>
+<td>Imagen</td>
+<td>Resultado de <code>docker build</code></td>
+</tr>
+
+<tr>
+<td>Captura contenedor ejecutándose</td>
+<td>Imagen</td>
+<td>Resultado de <code>docker ps</code></td>
+</tr>
+
+<tr>
+<td>Captura servicio en navegador</td>
+<td>Imagen</td>
+<td>Acceso al puerto 8080</td>
+</tr>
+
+<tr>
+<td>Reflexión técnica</td>
+<td>Texto breve</td>
+<td>5–8 líneas sobre el rol de Docker en despliegue de software</td>
+</tr>
+
+</table>
+
+<p class="muted">
+Actividad orientada a comprender el rol de la contenerización dentro del
+ciclo de vida del software y su relación con arquitecturas modernas
+basadas en microservicios.
+</p>
+
+</main>
 
 </body>
 </html>
