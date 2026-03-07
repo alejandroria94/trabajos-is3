@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trabajo en Clase 03 - Contenerización con Docker</title>
+<title>Trabajo en Clase 03 - Docker y Docker Compose</title>
 
 <style>
 :root{
@@ -97,18 +97,19 @@ th{
   background:#fafafa;
 }
 
-code{
-  background:#f4f4f4;
-  padding:3px 6px;
-  border-radius:4px;
-  font-size:13px;
-}
-
 pre{
   background:#f4f4f4;
   padding:12px;
   border-radius:6px;
   overflow-x:auto;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+code{
+  background:#f4f4f4;
+  padding:3px 6px;
+  border-radius:4px;
 }
 
 .muted{
@@ -123,7 +124,7 @@ pre{
 
 <header>
   <h1>Trabajo en Clase 03</h1>
-  <p>Contenerización de una aplicación con Docker</p>
+  <p>Introducción práctica a Docker y Docker Compose con aplicación Java y MySQL</p>
 </header>
 
 <main>
@@ -131,126 +132,295 @@ pre{
 <p><a href="../index.html">← Volver al listado</a></p>
 
 <div class="box">
-  <p><strong>Modalidad:</strong> Grupal (2-4 estudiantes)</p>
-  <p><strong>Duración:</strong> 90 minutos</p>
-  <p><strong>Entrega:</strong> Capturas de pantalla + breve reflexión</p>
+  <p><strong>Modalidad:</strong> Grupal (2–4 estudiantes)</p>
+  <p><strong>Duración:</strong> 90–120 minutos</p>
+  <p><strong>Herramientas:</strong> IntelliJ IDEA, Docker Desktop, Maven</p>
+  <p><strong>Entrega:</strong> Un (1) documento PDF breve por grupo con capturas y respuestas</p>
 </div>
 
 <h2>1. Objetivo</h2>
 
 <p>
-Comprender el uso de Docker como herramienta para empaquetar aplicaciones,
-garantizando portabilidad, reproducibilidad y consistencia entre entornos de desarrollo,
-pruebas y producción.
+Comprender cómo Docker permite empaquetar aplicaciones en contenedores
+y cómo Docker Compose facilita la ejecución coordinada de varios servicios,
+incluyendo una aplicación Java y una base de datos MySQL.
 </p>
 
 <h2>2. Contexto de Ingeniería de Software</h2>
 
-<p>
-Uno de los problemas más comunes en el desarrollo de software es la inconsistencia entre
-entornos de ejecución.
-</p>
-
 <div class="box">
-<p><strong>Ejemplo típico:</strong></p>
+  <p>Uno de los problemas más comunes en el desarrollo de software es:</p>
+  <p><strong>“En mi computador funciona”.</strong></p>
 
-<ul>
-<li>En el computador del desarrollador funciona correctamente</li>
-<li>En el servidor de pruebas aparecen errores de configuración</li>
-<li>En producción existen dependencias diferentes</li>
-</ul>
+  <p>Esto ocurre porque pueden cambiar entre entornos:</p>
+  <ul>
+    <li>la versión de Java</li>
+    <li>las dependencias instaladas</li>
+    <li>la configuración del servidor</li>
+    <li>el sistema operativo</li>
+    <li>la disponibilidad de servicios auxiliares como bases de datos</li>
+  </ul>
+
+  <p>
+  Docker ayuda a empaquetar la aplicación y su entorno de ejecución.
+  Docker Compose ayuda a levantar varios servicios relacionados como una sola solución.
+  </p>
 </div>
 
-<p>
-Docker permite resolver este problema empaquetando la aplicación y su entorno
-de ejecución dentro de un <strong>contenedor</strong>.
-</p>
-
-<h2>3. Conceptos fundamentales</h2>
+<h2>3. Conceptos básicos</h2>
 
 <table>
 <tr>
 <th>Concepto</th>
 <th>Descripción</th>
 </tr>
-
 <tr>
 <td>Imagen</td>
-<td>Plantilla que contiene el sistema base, dependencias y aplicación.</td>
+<td>Plantilla con sistema base, runtime, dependencias y aplicación.</td>
 </tr>
-
 <tr>
 <td>Contenedor</td>
 <td>Instancia en ejecución de una imagen.</td>
 </tr>
-
 <tr>
 <td>Dockerfile</td>
 <td>Archivo que define cómo construir una imagen.</td>
 </tr>
-
 <tr>
 <td>Puerto</td>
-<td>Permite acceder a la aplicación desde fuera del contenedor.</td>
+<td>Canal que permite acceder a un servicio desde fuera del contenedor.</td>
 </tr>
-
 <tr>
 <td>Volumen</td>
-<td>Mecanismo para persistir datos generados por la aplicación.</td>
+<td>Mecanismo para persistir datos fuera del ciclo de vida del contenedor.</td>
 </tr>
-
+<tr>
+<td>Docker Compose</td>
+<td>Herramienta para definir y levantar varios servicios con un solo archivo YAML.</td>
+</tr>
 </table>
 
-<h2>4. Paso 1 — Verificar instalación de Docker</h2>
+<h2>4. Requisitos previos</h2>
 
-<p>Ejecutar en la terminal:</p>
+<ul>
+  <li>Docker Desktop instalado y en ejecución.</li>
+  <li>IntelliJ IDEA instalado.</li>
+  <li>Proyecto Java abierto en IntelliJ.</li>
+  <li>Maven disponible desde IntelliJ o desde la terminal integrada.</li>
+</ul>
+
+<h2>5. Estructura esperada del proyecto</h2>
+
+<p>
+El proyecto debe abrirse en IntelliJ y la raíz del proyecto debe contener
+los archivos principales. La ubicación sugerida en Windows es:
+</p>
+
+<pre>
+C:\LABS\DemoAcademicoApplication
+</pre>
+
+<p>La estructura esperada es:</p>
+
+<pre>
+DemoAcademicoApplication
+│
+├── src
+├── target
+├── pom.xml
+├── Dockerfile
+└── docker-compose.yml
+</pre>
+
+<div class="box">
+  <p><strong>Importante:</strong> El archivo <code>Dockerfile</code> y el archivo <code>docker-compose.yml</code>
+  deben quedar en la <strong>raíz del proyecto</strong>, al mismo nivel de <code>pom.xml</code>.</p>
+</div>
+
+<h2>6. Verificar instalación de Docker</h2>
+
+<p>En la terminal integrada de IntelliJ ejecutar:</p>
 
 <pre>
 docker --version
-</pre>
-
-<p>Luego verificar que Docker esté ejecutándose:</p>
-
-<pre>
 docker info
 </pre>
 
-<h2>5. Paso 2 — Compilar la aplicación</h2>
+<h2>7. Primer contenedor de prueba</h2>
 
-<p>Ubíquese en el directorio del proyecto y ejecute:</p>
+<p>Ejecutar:</p>
+
+<pre>
+docker run hello-world
+</pre>
+
+<p>
+Este comando verifica que Docker puede descargar una imagen,
+crear un contenedor y ejecutarlo correctamente.
+</p>
+
+<h2>8. Contenedor web de ejemplo</h2>
+
+<p>Ejecutar:</p>
+
+<pre>
+docker run -d -p 8088:80 --name mi-nginx nginx
+</pre>
+
+<p>Luego abrir en el navegador:</p>
+
+<pre>
+http://localhost:8088
+</pre>
+
+<p>
+Este ejemplo permite observar un servicio web ejecutándose dentro de un contenedor.
+</p>
+
+<h2>9. Dos contenedores para comprender puertos</h2>
+
+<p>Ejecutar:</p>
+
+<pre>
+docker run -d -p 8088:80 --name nginx1 nginx
+docker run -d -p 8089:80 --name nginx2 nginx
+</pre>
+
+<p>Probar en el navegador:</p>
+
+<pre>
+http://localhost:8088
+http://localhost:8089
+</pre>
+
+<p>
+Observe que ambos contenedores usan internamente el puerto 80,
+pero el host necesita puertos distintos.
+</p>
+
+<h2>10. Comandos básicos de Docker</h2>
+
+<table>
+<tr>
+<th>Comando</th>
+<th>Descripción</th>
+</tr>
+<tr>
+<td><code>docker ps</code></td>
+<td>Lista contenedores en ejecución.</td>
+</tr>
+<tr>
+<td><code>docker ps -a</code></td>
+<td>Lista todos los contenedores, incluso detenidos.</td>
+</tr>
+<tr>
+<td><code>docker images</code></td>
+<td>Lista imágenes disponibles localmente.</td>
+</tr>
+<tr>
+<td><code>docker logs nombre</code></td>
+<td>Muestra la salida y los logs de un contenedor.</td>
+</tr>
+<tr>
+<td><code>docker stop nombre</code></td>
+<td>Detiene un contenedor.</td>
+</tr>
+<tr>
+<td><code>docker start nombre</code></td>
+<td>Inicia un contenedor detenido.</td>
+</tr>
+<tr>
+<td><code>docker rm nombre</code></td>
+<td>Elimina un contenedor.</td>
+</tr>
+<tr>
+<td><code>docker rmi imagen</code></td>
+<td>Elimina una imagen.</td>
+</tr>
+<tr>
+<td><code>docker build -t nombre .</code></td>
+<td>Construye una imagen a partir de un Dockerfile.</td>
+</tr>
+</table>
+
+<h2>11. Compilar la aplicación Java</h2>
+
+<p>En la terminal integrada de IntelliJ ejecutar:</p>
 
 <pre>
 mvn clean package
 </pre>
 
-<p>Este comando genera el archivo compilado en:</p>
+<p>
+Este comando debe generar un archivo <code>.jar</code> dentro de la carpeta:
+</p>
 
 <pre>
-target/demoacademico.jar
+target/
 </pre>
 
-<h2>6. Paso 3 — Crear el Dockerfile</h2>
+<div class="box">
+  <p><strong>Verificación:</strong> revise en IntelliJ que dentro de <code>target</code> exista
+  un archivo <code>.jar</code>. Ese archivo será copiado al contenedor.</p>
+</div>
 
-<p>Crear un archivo llamado <strong>Dockerfile</strong> con el siguiente contenido:</p>
+<h2>12. Crear el Dockerfile</h2>
+
+<p>Crear en la raíz del proyecto el archivo <code>Dockerfile</code> con el siguiente contenido:</p>
 
 <pre>
 FROM eclipse-temurin:21-jdk
-
 RUN mkdir -p /opt/demo-academico
-
 ENV TZ="America/Bogota"
 ENV WORKSPACE /opt/demo-academico
-
 WORKDIR ${WORKSPACE}
-
 COPY target/*.jar app.jar
-
 EXPOSE 8080
-
 ENTRYPOINT ["java","-Xmx1024m","-jar","app.jar"]
 </pre>
 
-<h2>7. Paso 4 — Construir la imagen</h2>
+<h2>13. Explicación del Dockerfile</h2>
+
+<table>
+<tr>
+<th>Instrucción</th>
+<th>Explicación</th>
+</tr>
+<tr>
+<td><code>FROM eclipse-temurin:21-jdk</code></td>
+<td>Usa una imagen base con Java 21 instalado.</td>
+</tr>
+<tr>
+<td><code>RUN mkdir -p /opt/demo-academico</code></td>
+<td>Crea el directorio interno de trabajo.</td>
+</tr>
+<tr>
+<td><code>ENV TZ="America/Bogota"</code></td>
+<td>Configura la zona horaria del contenedor.</td>
+</tr>
+<tr>
+<td><code>ENV WORKSPACE /opt/demo-academico</code></td>
+<td>Define una variable con la ruta de trabajo.</td>
+</tr>
+<tr>
+<td><code>WORKDIR ${WORKSPACE}</code></td>
+<td>Establece el directorio de trabajo.</td>
+</tr>
+<tr>
+<td><code>COPY target/*.jar app.jar</code></td>
+<td>Copia el JAR compilado al contenedor con el nombre <code>app.jar</code>.</td>
+</tr>
+<tr>
+<td><code>EXPOSE 8080</code></td>
+<td>Declara el puerto usado por la aplicación.</td>
+</tr>
+<tr>
+<td><code>ENTRYPOINT [...]</code></td>
+<td>Define el comando de inicio del contenedor.</td>
+</tr>
+</table>
+
+<h2>14. Construir la imagen</h2>
 
 <p>Ejecutar:</p>
 
@@ -258,129 +428,294 @@ ENTRYPOINT ["java","-Xmx1024m","-jar","app.jar"]
 docker build -t demoacademico .
 </pre>
 
-<p>Luego verificar las imágenes disponibles:</p>
+<p>Luego verificar:</p>
 
 <pre>
 docker images
 </pre>
 
-<h2>8. Paso 5 — Ejecutar el contenedor</h2>
+<h2>15. Ejecutar el contenedor de la aplicación</h2>
 
-<p>Ejecutar el siguiente comando:</p>
+<p>Ejecutar:</p>
 
 <pre>
 docker run -d -p 8080:8080 --name demoacademico demoacademico
 </pre>
 
-<p>Explicación de parámetros:</p>
-
-<table>
-
-<tr>
-<th>Parámetro</th>
-<th>Descripción</th>
-</tr>
-
-<tr>
-<td>-d</td>
-<td>Ejecuta el contenedor en segundo plano.</td>
-</tr>
-
-<tr>
-<td>-p 8080:8080</td>
-<td>Mapea el puerto del contenedor al host.</td>
-</tr>
-
-<tr>
-<td>--name</td>
-<td>Nombre del contenedor.</td>
-</tr>
-
-<tr>
-<td>demoacademico</td>
-<td>Imagen utilizada.</td>
-</tr>
-
-</table>
-
-<h2>9. Paso 6 — Verificar ejecución</h2>
-
-<p>Ejecutar:</p>
+<p>Verificar:</p>
 
 <pre>
 docker ps
+docker logs demoacademico
 </pre>
 
-<p>Luego abrir en el navegador:</p>
+<p>Probar en navegador o Postman:</p>
 
 <pre>
 http://localhost:8080
 </pre>
 
-<h2>10. Paso 7 — Visualizar logs</h2>
+<h2>16. Introducción a Docker Compose</h2>
+
+<p>
+En aplicaciones reales, no siempre basta con un solo contenedor.
+Muchas veces se necesita ejecutar varios servicios al mismo tiempo,
+por ejemplo:
+</p>
+
+<ul>
+  <li>una aplicación backend</li>
+  <li>una base de datos</li>
+  <li>un servidor web</li>
+</ul>
+
+<p>
+Docker Compose permite describir todos esos servicios en un solo archivo
+llamado <code>docker-compose.yml</code> y ejecutarlos con un único comando.
+</p>
+
+<div class="box">
+  <p><strong>Idea principal:</strong> con Docker Compose, la arquitectura básica
+  del sistema queda declarada en un archivo YAML.</p>
+</div>
+
+<h2>17. Crear el archivo docker-compose.yml</h2>
+
+<p>En la raíz del proyecto crear el archivo <code>docker-compose.yml</code> con el siguiente contenido:</p>
 
 <pre>
-docker logs demoacademico
+services:
+
+  app:
+    image: demoacademico
+    container_name: demoacademico-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: demoacademico-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demoacademico
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: demo123
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
 </pre>
 
-<p>Este comando permite observar el proceso de arranque del servicio.</p>
-
-<h2>11. Discusión</h2>
-
-Responder en grupo:
-
-<ol>
-
-<li>¿Cuál es la diferencia entre una <strong>imagen</strong> y un <strong>contenedor</strong>?</li>
-
-<li>¿Qué problema de ingeniería de software soluciona Docker?</li>
-
-<li>¿Por qué Docker es importante en arquitecturas basadas en microservicios?</li>
-
-<li>¿Qué ventajas ofrece Docker frente a ejecutar la aplicación directamente en el sistema operativo?</li>
-
-</ol>
-
-<h2>12. Entregables</h2>
+<h2>18. Explicación del docker-compose.yml</h2>
 
 <table>
+<tr>
+<th>Elemento</th>
+<th>Explicación</th>
+</tr>
+<tr>
+<td><code>services</code></td>
+<td>Define los servicios o contenedores que componen la solución.</td>
+</tr>
+<tr>
+<td><code>app</code></td>
+<td>Servicio de la aplicación Java construido previamente.</td>
+</tr>
+<tr>
+<td><code>db</code></td>
+<td>Servicio de base de datos MySQL.</td>
+</tr>
+<tr>
+<td><code>depends_on</code></td>
+<td>Indica que la aplicación depende del servicio de base de datos.</td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td>Define variables de entorno para inicializar MySQL.</td>
+</tr>
+<tr>
+<td><code>ports</code></td>
+<td>Publica puertos del contenedor hacia el host.</td>
+</tr>
+<tr>
+<td><code>volumes</code></td>
+<td>Permite persistir los datos de MySQL.</td>
+</tr>
+</table>
 
+<h2>19. Sobre el mapeo de puertos en MySQL</h2>
+
+<p>En el servicio de base de datos se usa:</p>
+
+<pre>
+"3307:3306"
+</pre>
+
+<p>Esto significa:</p>
+
+<ul>
+  <li><strong>3307</strong>: puerto del host</li>
+  <li><strong>3306</strong>: puerto interno del contenedor MySQL</li>
+</ul>
+
+<p>
+Se usa 3307 en el host para evitar conflictos si el equipo ya tiene una instalación local
+de MySQL escuchando en el puerto 3306.
+</p>
+
+<h2>20. Ejecutar Docker Compose</h2>
+
+<p>Desde la terminal ejecutar:</p>
+
+<pre>
+docker compose up -d
+</pre>
+
+<p>Verificar servicios:</p>
+
+<pre>
+docker compose ps
+</pre>
+
+<p>Ver logs:</p>
+
+<pre>
+docker compose logs
+</pre>
+
+<h2>21. Verificar ejecución de los servicios</h2>
+
+<p>Comprobar que la aplicación responde en:</p>
+
+<pre>
+http://localhost:8080
+</pre>
+
+<p>Comprobar que el contenedor MySQL está activo con:</p>
+
+<pre>
+docker ps
+</pre>
+
+<p>También se puede revisar solo el log de MySQL:</p>
+
+<pre>
+docker logs demoacademico-db
+</pre>
+
+<h2>22. Detener todos los servicios</h2>
+
+<pre>
+docker compose down
+</pre>
+
+<p>
+Este comando detiene y elimina los contenedores creados por Docker Compose.
+El volumen persistente de MySQL puede mantenerse para conservar los datos.
+</p>
+
+<h2>23. Diferencia entre Docker y Docker Compose</h2>
+
+<table>
+<tr>
+<th>Docker</th>
+<th>Docker Compose</th>
+</tr>
+<tr>
+<td>Trabaja normalmente con contenedores individuales.</td>
+<td>Gestiona varios servicios relacionados.</td>
+</tr>
+<tr>
+<td>Usa comandos como <code>docker run</code>.</td>
+<td>Usa comandos como <code>docker compose up</code>.</td>
+</tr>
+<tr>
+<td>La configuración suele quedar distribuida en comandos.</td>
+<td>La configuración queda declarada en un archivo YAML.</td>
+</tr>
+</table>
+
+<h2>24. Diagrama de referencia</h2>
+
+<div class="box">
+  <p><strong>Diagrama sugerido para acompañar la actividad:</strong></p>
+  <p>Archivo generado: <code>a_2d_digital_infographic_illustrates_the_concept_o.png</code></p>
+  <p>
+  Este diagrama representa la relación entre <code>docker-compose.yml</code>,
+  Docker Compose, el contenedor de la aplicación Java y el contenedor MySQL.
+  Puede ser insertado en la versión final del material del curso.
+  </p>
+</div>
+
+<h2>25. Preguntas de reflexión</h2>
+
+<ol>
+  <li>¿Cuál es la diferencia entre una imagen y un contenedor?</li>
+  <li>¿Por qué Docker ayuda a resolver problemas de despliegue entre entornos?</li>
+  <li>¿Qué ventaja ofrece Docker Compose frente a ejecutar varios contenedores manualmente?</li>
+  <li>¿Por qué se usa un volumen en el servicio MySQL?</li>
+  <li>¿Qué función cumple el mapeo de puertos en la aplicación y en la base de datos?</li>
+</ol>
+
+<h2>26. Entregables</h2>
+
+<table>
 <tr>
 <th>Entregable</th>
 <th>Formato</th>
 <th>Detalle mínimo</th>
 </tr>
-
 <tr>
-<td>Captura construcción imagen</td>
-<td>Imagen</td>
-<td>Resultado de <code>docker build</code></td>
+<td>Contenedor de prueba</td>
+<td>Captura</td>
+<td>Resultado de <code>docker run hello-world</code></td>
 </tr>
-
 <tr>
-<td>Captura contenedor ejecutándose</td>
-<td>Imagen</td>
-<td>Resultado de <code>docker ps</code></td>
+<td>Servidor nginx</td>
+<td>Captura</td>
+<td>Acceso a <code>localhost:8088</code> o <code>localhost:8089</code></td>
 </tr>
-
 <tr>
-<td>Captura servicio en navegador</td>
-<td>Imagen</td>
-<td>Acceso al puerto 8080</td>
+<td>Imagen de la aplicación</td>
+<td>Captura</td>
+<td>Resultado de <code>docker build</code> y <code>docker images</code></td>
 </tr>
-
+<tr>
+<td>Contenedor de la aplicación</td>
+<td>Captura</td>
+<td>Resultado de <code>docker ps</code> y prueba del servicio</td>
+</tr>
+<tr>
+<td>Docker Compose</td>
+<td>Captura</td>
+<td>Resultado de <code>docker compose ps</code> con aplicación y MySQL</td>
+</tr>
 <tr>
 <td>Reflexión técnica</td>
 <td>Texto breve</td>
-<td>5-8 líneas sobre el rol de Docker en despliegue de software</td>
+<td>Respuesta grupal a las preguntas de reflexión</td>
 </tr>
+</table>
 
+<h2>27. Rúbrica</h2>
+
+<table>
+<tr><th>Criterio</th><th>Peso</th></tr>
+<tr><td>Comprensión de conceptos Docker y Compose</td><td>25%</td></tr>
+<tr><td>Ejecución correcta de contenedores y comandos</td><td>25%</td></tr>
+<tr><td>Construcción de imagen y ejecución de aplicación</td><td>20%</td></tr>
+<tr><td>Comprensión de Docker Compose con MySQL</td><td>20%</td></tr>
+<tr><td>Calidad formal de la entrega</td><td>10%</td></tr>
 </table>
 
 <p class="muted">
-Actividad orientada a comprender el rol de la contenerización dentro del
-ciclo de vida del software y su relación con arquitecturas modernas
-basadas en microservicios.
+Actividad orientada a comprender la contenerización de software y la ejecución coordinada
+de múltiples servicios como parte del despliegue de aplicaciones modernas.
 </p>
 
 </main>
