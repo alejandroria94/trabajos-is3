@@ -11,7 +11,7 @@
     header{background:var(--blue);color:#fff;padding:22px 18px;text-align:center;}
     header h1{margin:0;font-size:22px;}
     header p{margin:8px 0 0;opacity:.95;}
-    main{max-width:900px;margin:0 auto;padding:22px 18px 30px;}
+    main{max-width:980px;margin:0 auto;padding:22px 18px 30px;}
     a{color:var(--link);font-weight:700;text-decoration:none;}
     a:hover{text-decoration:underline;}
     h2{font-size:16px;margin:18px 0 8px;color:#0f1f4a;}
@@ -22,18 +22,19 @@
     th{background:var(--th);text-align:left;}
     .muted{color:var(--muted);}
     .box{border:1px solid var(--border);border-radius:10px;padding:14px;margin:14px 0;background:#fafafa;}
-    .code{
-      background:#0f172a;
-      color:#e5e7eb;
-      border-radius:8px;
-      padding:12px;
-      overflow:auto;
-      font-family:Consolas,Monaco,monospace;
-      font-size:13px;
-      line-height:1.5;
-      margin:10px 0;
-      white-space:pre-wrap;
-    }
+.code{
+  background:#f3f4f6;
+  color:#111827;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  padding:12px;
+  overflow:auto;
+  font-family:Consolas,Monaco,monospace;
+  font-size:13px;
+  line-height:1.5;
+  margin:10px 0;
+  white-space:pre-wrap;
+}
     .tag{
       display:inline-block;
       background:#eef2ff;
@@ -45,23 +46,38 @@
       margin:2px 6px 2px 0;
       font-weight:700;
     }
+    .note{
+      border-left:4px solid #1f3c88;
+      background:#f8fbff;
+      padding:10px 12px;
+      margin:10px 0;
+      font-size:13px;
+    }
+    .warn{
+      border-left:4px solid #b45309;
+      background:#fffbeb;
+      padding:10px 12px;
+      margin:10px 0;
+      font-size:13px;
+    }
   </style>
 </head>
 <body>
 
   <header>
     <h1>Trabajo en Clase 04</h1>
-    <p>Taller complementario: Optimización de imágenes Docker, Multi-Stage, Volúmenes y Redes</p>
+    <p>Laboratorio guiado: Docker con Spring Boot, Multi-Stage, Volúmenes y Redes</p>
   </header>
 
   <main>
     <p><a href="../index.html">← Volver al listado</a></p>
 
     <div class="box">
-      <p><strong>Modalidad:</strong> Grupos </p>
-      <p><strong>Entrega:</strong> PDF con respuestas argumentadas y evidencia del análisis realizado</p>
-      <p><strong>Apoyo permitido:</strong> Apuntes de clase, diapositivas, laboratorios previos y documentación oficial</p>
-      <p><strong>Temas que refuerza:</strong></p>
+      <p><strong>Modalidad:</strong> Grupos</p>
+      <p><strong>Entrega:</strong> PDF con evidencias, respuestas argumentadas y conclusiones</p>
+      <p><strong>Tipo de actividad:</strong> Laboratorio guiado paso a paso</p>
+      <p><strong>Temas centrales:</strong></p>
+      <span class="tag">Spring Boot</span>
       <span class="tag">Dockerfile</span>
       <span class="tag">Build vs Runtime</span>
       <span class="tag">Tamaño de imagen</span>
@@ -74,147 +90,187 @@
 
     <h2>1. Objetivo</h2>
     <p>
-      Analizar cómo las decisiones de construcción de una imagen Docker impactan el tamaño, la seguridad,
-      la eficiencia y el despliegue en entornos productivos. Además, comprender el valor práctico del
-      enfoque <em>multi-stage</em>, así como la importancia de los <strong>volúmenes</strong> para la persistencia
-      de datos y de las <strong>redes</strong> para la comunicación entre contenedores.
+      Construir y analizar distintos enfoques de contenerización para una aplicación Spring Boot,
+      comparando su impacto sobre el tamaño de la imagen, el tiempo de construcción, el despliegue,
+      la seguridad y la organización de servicios. Al finalizar, el estudiante deberá justificar por
+      qué conviene separar la compilación de la ejecución, cuándo usar <em>multi-stage</em>, y por qué
+      los volúmenes y las redes son fundamentales en escenarios reales.
     </p>
 
     <h2>2. Objetivos de aprendizaje</h2>
     <ul>
-      <li>Comprender conceptualmente el papel del Dockerfile, la separación entre build y runtime, y el enfoque multi-stage.</li>
-      <li>Analizar técnicamente el impacto que tienen las decisiones de construcción sobre el tamaño de la imagen, la seguridad y el despliegue.</li>
-      <li>Aplicar buenas prácticas relacionadas con la optimización de imágenes, la separación de responsabilidades y el uso adecuado de multi-stage.</li>
-      <li>Identificar la importancia de los volúmenes para la persistencia de datos y de las redes para la comunicación entre contenedores.</li>
-      <li>Argumentar con claridad y de manera estructurada por qué estas prácticas son relevantes en escenarios reales de desarrollo y producción.</li>
+      <li>Comprender el papel del Dockerfile, la separación entre build y runtime, y el enfoque multi-stage en Spring Boot.</li>
+      <li>Analizar el impacto de las decisiones de construcción sobre el tamaño de la imagen, la seguridad y el despliegue.</li>
+      <li>Aplicar buenas prácticas de construcción y optimización de imágenes para aplicaciones Spring Boot.</li>
+      <li>Identificar la importancia de los volúmenes para la persistencia de datos.</li>
+      <li>Comprender el uso de redes para la comunicación entre contenedores.</li>
+      <li>Argumentar con claridad por qué estas prácticas son relevantes en producción.</li>
     </ul>
 
-    <h2>3. Contexto del taller</h2>
-    <p>
-      En muchos proyectos, especialmente al iniciar el uso de Docker, es común colocar todo el proceso dentro
-      del mismo <strong>Dockerfile</strong>: instalar dependencias, compilar, empaquetar y ejecutar. Aunque esto
-      puede parecer práctico, en realidad genera imágenes más pesadas, menos seguras y poco adecuadas para
-      producción.
-    </p>
-    <p>
-      Adicionalmente, cuando se usan contenedores con bases de datos o múltiples servicios, aparecen otros temas
-      fundamentales: la persistencia de información mediante <strong>volúmenes</strong> y la comunicación entre
-      servicios mediante <strong>redes</strong>. Por ello, este taller amplía el análisis hacia estos dos conceptos.
-    </p>
-    <p>
-      Este trabajo se centra en responder y reforzar los siguientes interrogantes:
-    </p>
+    <h2>3. Requisitos previos</h2>
     <ul>
-      <li>¿Por qué no compilar en Dockerfile?</li>
-      <li>¿Qué sucede con el tamaño de una imagen si incluimos la compilación dentro del Dockerfile?</li>
-      <li>¿Qué ventajas tiene separar la compilación del proceso de ejecución cuando trabajamos con contenedores?</li>
-      <li>¿Cómo impacta esta separación en la seguridad y en el despliegue en entornos productivos?</li>
-      <li>¿Por qué los volúmenes son fundamentales cuando un contenedor maneja datos?</li>
-      <li>¿Por qué las redes son necesarias cuando varios contenedores deben comunicarse entre sí?</li>
+      <li>Docker Desktop o Docker Engine instalado.</li>
+      <li>Java 21 instalado.</li>
+      <li>Maven instalado o wrapper <code>mvnw</code> disponible.</li>
+      <li>Editor de texto o IDE.</li>
+      <li>Terminal o consola.</li>
     </ul>
 
-    <h2>4. Indicaciones importantes</h2>
-    <div class="box">
-      <p><strong>Para este taller no basta con responder teóricamente.</strong></p>
-      <ul>
-        <li>Debes analizar los Dockerfile propuestos.</li>
-        <li>Debes comparar enfoques de construcción.</li>
-        <li>Debes justificar cada respuesta con argumentos claros.</li>
-        <li>Debes apoyar tu análisis con evidencia cuando sea posible.</li>
-        <li>Si cuentas con Docker instalado, realiza pruebas y anexa capturas o resultados de comandos.</li>
-        <li>Debes relacionar los conceptos revisados con escenarios reales de despliegue.</li>
-      </ul>
+    <div class="note">
+      <strong>Importante:</strong> este laboratorio puede resolverse usando una aplicación Spring Boot existente o creando una mínima desde cero.
     </div>
 
-    <h2>5. ¿Dónde mirar la información solicitada?</h2>
-
-    <h3>5.1 Tamaño de la imagen</h3>
-    <p>
-      Para revisar el tamaño de una imagen construida, ejecuta:
-    </p>
-    <div class="code">docker images</div>
-    <p>
-      Observa especialmente la columna <strong>SIZE</strong>. Allí podrás comparar si una imagen ocupa más espacio
-      que otra y relacionarlo con lo que contiene internamente.
-    </p>
-
-    <h3>5.2 Tiempo de build</h3>
-    <p>
-      Para analizar el tiempo de construcción, ejecuta:
-    </p>
-    <div class="code">docker build -t app-test .</div>
-    <p>
-      Observa cuánto tarda el proceso. Si deseas, puedes registrar el tiempo manualmente o tomar captura del resultado
-      final del build.
-    </p>
-
-    <h3>5.3 Tiempo de despliegue o arranque</h3>
-    <p>
-      Para analizar el tiempo de ejecución o arranque del contenedor, ejecuta:
-    </p>
-    <div class="code">docker run -p 8080:8080 app-test</div>
-    <p>
-      Observa cuánto tarda en iniciar la aplicación y en quedar disponible.
-    </p>
-
-    <h3>5.4 Seguridad</h3>
-    <p>
-      La seguridad en este taller se analiza de manera conceptual. Revisa si la imagen final incluye elementos que no
-      deberían estar en producción, por ejemplo:
-    </p>
+    <h2>4. Evidencias que debe entregar el estudiante</h2>
     <ul>
-      <li>Maven o herramientas de construcción</li>
-      <li>Archivos fuente innecesarios</li>
-      <li>Dependencias temporales de compilación</li>
-      <li>Artefactos intermedios que no se requieren para ejecutar</li>
+      <li>Captura de la estructura del proyecto Spring Boot.</li>
+      <li>Captura de la compilación local con Maven.</li>
+      <li>Captura de la ejecución local del <code>.jar</code>.</li>
+      <li>Captura de cada <code>docker build</code>.</li>
+      <li>Captura del comando <code>docker images</code>.</li>
+      <li>Captura de ejecución con <code>docker run</code>.</li>
+      <li>Captura del uso de volúmenes y redes, si realizó las pruebas.</li>
+      <li>Respuestas argumentadas a todas las actividades.</li>
     </ul>
 
-    <h3>5.5 Persistencia con volúmenes</h3>
-    <p>
-      Para analizar el uso de volúmenes, observa si los datos del contenedor sobreviven aun cuando este se elimina.
-      Puedes apoyarte en comandos como:
-    </p>
-    <div class="code">docker volume ls
-docker inspect nombre-contenedor
-docker run -v datos:/ruta/interna imagen</div>
-    <p>
-      Lo importante es identificar si la información queda solo dentro del contenedor o si se almacena por fuera de él.
-    </p>
+    <h2>5. Estructura general del laboratorio</h2>
+    <ol>
+      <li>Crear o seleccionar una aplicación Spring Boot.</li>
+      <li>Ejecutarla localmente.</li>
+      <li>Construir una imagen que compile dentro del Dockerfile.</li>
+      <li>Analizar tamaño, tiempo y desventajas.</li>
+      <li>Construir una imagen optimizada que solo ejecute el <code>.jar</code>.</li>
+      <li>Construir una imagen con multi-stage.</li>
+      <li>Comparar los tres enfoques.</li>
+      <li>Probar persistencia con volúmenes.</li>
+      <li>Probar comunicación con redes.</li>
+      <li>Responder preguntas de análisis y redactar conclusiones.</li>
+    </ol>
 
-    <h3>5.6 Comunicación mediante redes</h3>
-    <p>
-      Para analizar redes, revisa cómo se comunican varios contenedores entre sí. Puedes apoyarte en comandos como:
-    </p>
-    <div class="code">docker network ls
-docker inspect nombre-red
-docker run --network nombre-red ...</div>
-    <p>
-      Debes identificar si los contenedores se encuentran aislados o si pueden interactuar entre ellos por nombre o por servicio.
-    </p>
+    <h2>6. Preparación del proyecto Spring Boot</h2>
 
-    <h3>5.7 Despliegue en producción</h3>
+    <h3>6.1 Opción A: usar un proyecto Spring Boot existente</h3>
     <p>
-      En tus respuestas debes considerar cómo el tamaño, la seguridad, la persistencia y la conectividad de la imagen
-      pueden afectar:
+      Si ya tiene un proyecto Spring Boot funcional, puede usarlo para el laboratorio.
+      Debe cumplir al menos con lo siguiente:
     </p>
     <ul>
-      <li>La velocidad de descarga de la imagen</li>
-      <li>El consumo de almacenamiento</li>
-      <li>El tiempo de despliegue en servidores</li>
-      <li>La facilidad de mantenimiento</li>
-      <li>La confiabilidad del artefacto que llega a producción</li>
-      <li>La persistencia de información importante</li>
-      <li>La comunicación correcta entre servicios</li>
+      <li>Debe compilar con Maven.</li>
+      <li>Debe generar un archivo <code>.jar</code>.</li>
+      <li>Debe poder ejecutarse localmente.</li>
+      <li>Debe exponer un puerto HTTP, normalmente el 8080.</li>
     </ul>
 
-    <h2>6. Paso a paso del taller</h2>
-
-    <h3>Paso 1. Comprensión del problema</h3>
+    <h3>6.2 Opción B: crear un proyecto Spring Boot mínimo</h3>
     <p>
-      Lee el siguiente Dockerfile y observa que en él se realiza tanto la compilación como la ejecución
-      de la aplicación dentro de la misma imagen.
+      Si no tiene un proyecto previo, cree una aplicación mínima con Spring Boot.
     </p>
 
+    <h3>6.3 Estructura mínima esperada</h3>
+    <p>La estructura básica del proyecto debe verse aproximadamente así:</p>
+    <div class="code">laboratorio-springboot/
+ ├── src/
+ │   ├── main/
+ │   │   ├── java/
+ │   │   │   └── com/ejemplo/demo/
+ │   │   │       ├── DemoApplication.java
+ │   │   │       └── HolaController.java
+ │   │   └── resources/
+ │   │       └── application.properties
+ ├── pom.xml
+ └── mvnw (opcional)</div>
+
+    <h3>6.4 Clase principal</h3>
+    <p>Archivo: <code>DemoApplication.java</code></p>
+    <div class="code">package com.ejemplo.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}</div>
+
+    <h3>6.5 Controlador sencillo</h3>
+    <p>Archivo: <code>HolaController.java</code></p>
+    <div class="code">package com.ejemplo.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HolaController {
+
+    @GetMapping("/hola")
+    public String hola() {
+        return "Hola desde Spring Boot con Docker 🚀";
+    }
+}</div>
+
+    <h3>6.6 Archivo de propiedades</h3>
+    <p>Archivo: <code>src/main/resources/application.properties</code></p>
+    <div class="code">spring.application.name=demo
+server.port=8080</div>
+
+    <h3>6.7 Dependencias mínimas del pom.xml</h3>
+    <p>El proyecto debe incluir al menos Spring Boot y Web.</p>
+    <div class="code">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</div>
+
+    <div class="warn">
+      Si el estudiante ya tiene un proyecto más completo, no necesita crear uno nuevo. Puede adaptar el laboratorio al proyecto existente, pero debe conservar la lógica de comparación entre enfoques.
+    </div>
+
+    <div class="box">
+      <p><strong>Actividad 1.</strong> Evidencie y responda:</p>
+      <ol>
+        <li>¿Trabajará con un proyecto existente o con uno creado para el laboratorio?</li>
+        <li>¿Qué endpoint simple expone su aplicación?</li>
+        <li>¿Cuál será el nombre base que usará para sus imágenes Docker?</li>
+      </ol>
+    </div>
+
+    <h2>7. Validación local de la aplicación</h2>
+
+    <h3>7.1 Compilar con Maven</h3>
+    <div class="code">mvn clean package</div>
+
+    <p>Si usa Maven Wrapper:</p>
+    <div class="code">./mvnw clean package</div>
+
+    <h3>7.2 Verificar generación del .jar</h3>
+    <p>Después de compilar, revise la carpeta <code>target</code>.</p>
+    <div class="code">ls target</div>
+
+    <h3>7.3 Ejecutar localmente</h3>
+    <div class="code">java -jar target/demo-0.0.1-SNAPSHOT.jar</div>
+
+    <p>Abra en navegador o Postman:</p>
+    <div class="code">http://localhost:8080/hola</div>
+
+    <div class="note">
+      Si la aplicación responde correctamente, continúe con Docker. Si falla aquí, primero debe corregir el proyecto.
+    </div>
+
+    <div class="box">
+      <p><strong>Actividad 2.</strong> Responda:</p>
+      <ol>
+        <li>¿Por qué es importante validar el proyecto antes de contenerizarlo?</li>
+        <li>¿Qué archivo ejecutable genera Spring Boot después del build?</li>
+        <li>¿Qué puerto usa la aplicación?</li>
+      </ol>
+    </div>
+
+    <h2>8. Primer enfoque: compilar dentro del Dockerfile</h2>
+
+    <h3>8.1 Crear Dockerfile incorrecto</h3>
+    <p>Cree un archivo llamado <code>Dockerfile.bad</code>.</p>
     <div class="code">FROM maven:3.9-eclipse-temurin-21
 
 WORKDIR /app
@@ -223,101 +279,116 @@ COPY . .
 
 RUN mvn clean package
 
-CMD ["java", "-jar", "target/app.jar"]</div>
+CMD ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar"]</div>
+
+    <h3>8.2 Construir imagen</h3>
+    <div class="code">docker build -f Dockerfile.bad -t spring-docker-bad .</div>
+
+    <h3>8.3 Ejecutar contenedor</h3>
+    <div class="code">docker run --rm -p 8080:8080 spring-docker-bad</div>
+
+    <h3>8.4 Probar el endpoint</h3>
+    <div class="code">http://localhost:8080/hola</div>
+
+    <h3>8.5 Revisar tamaño de imagen</h3>
+    <div class="code">docker images</div>
 
     <div class="box">
-      <p><strong>Actividad 1.</strong> Responde:</p>
+      <p><strong>Actividad 3.</strong> Analice:</p>
       <ol>
-        <li>¿Qué herramientas quedan incluidas en la imagen final?</li>
-        <li>¿Por qué esta imagen puede resultar más pesada de lo necesario?</li>
-        <li>¿Qué archivos adicionales podrían quedar dentro de la imagen?</li>
-        <li>¿Consideras este Dockerfile adecuado para producción? Justifica.</li>
+        <li>¿Qué herramientas de build quedan dentro de la imagen?</li>
+        <li>¿Qué archivos adicionales podrían quedar en la imagen final?</li>
+        <li>¿Qué efecto tiene esto sobre el tamaño?</li>
+        <li>¿Por qué este enfoque no es ideal para producción?</li>
       </ol>
     </div>
 
-    <h3>Paso 2. Análisis del tamaño de imagen</h3>
-    <p>
-      Si tienes Docker disponible, construye la imagen y revisa su tamaño.
-    </p>
-    <div class="code">docker build -t dockerfile-incorrecto .
-docker images</div>
+    <h2>9. Segundo enfoque: compilación separada y Docker solo ejecuta</h2>
 
-    <div class="box">
-      <p><strong>Actividad 2.</strong> Analiza y responde:</p>
-      <ol>
-        <li>¿Qué sucede con el tamaño de la imagen si la compilación se realiza dentro del Dockerfile?</li>
-        <li>¿Qué consecuencias puede tener una imagen muy grande en descarga, almacenamiento y despliegue?</li>
-        <li>Si realizaste la prueba, registra el tamaño observado o anexa una captura.</li>
-      </ol>
-    </div>
-
-    <h3>Paso 3. Separar compilación y ejecución</h3>
-    <p>
-      Ahora observa una alternativa en la que la aplicación se compila previamente y Docker se usa
-      únicamente para ejecutar el artefacto generado.
-    </p>
-
+    <h3>9.1 Crear Dockerfile optimizado</h3>
+    <p>Cree un archivo llamado <code>Dockerfile.good</code>.</p>
     <div class="code">FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
-COPY app.jar app.jar
+COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]</div>
 
+    <h3>9.2 Construir imagen</h3>
+    <div class="code">docker build -f Dockerfile.good -t spring-docker-good .</div>
+
+    <h3>9.3 Ejecutar contenedor</h3>
+    <div class="code">docker run --rm -p 8080:8080 spring-docker-good</div>
+
+    <h3>9.4 Probar endpoint</h3>
+    <div class="code">http://localhost:8080/hola</div>
+
+    <h3>9.5 Revisar tamaño</h3>
+    <div class="code">docker images</div>
+
     <div class="box">
-      <p><strong>Actividad 3.</strong> Analiza este enfoque y responde:</p>
+      <p><strong>Actividad 4.</strong> Compare con el enfoque anterior:</p>
       <ol>
-        <li>¿Qué ventajas tiene separar la compilación del proceso de ejecución?</li>
-        <li>¿Qué cambia respecto al tamaño de la imagen final?</li>
-        <li>¿Qué cambia respecto al tiempo de despliegue?</li>
-        <li>¿Qué cambia respecto al control del artefacto liberado?</li>
+        <li>¿Cuál imagen es más grande?</li>
+        <li>¿Qué ventaja tiene generar el <code>.jar</code> antes y luego copiarlo?</li>
+        <li>¿Qué significa, en este caso, separar build y runtime?</li>
+        <li>¿Por qué esta separación mejora el despliegue?</li>
       </ol>
     </div>
 
-    <h3>Paso 4. Comparación práctica entre enfoques</h3>
-    <p>
-      Si tienes acceso a Docker, construye también una imagen basada en el enfoque optimizado y compara resultados.
-    </p>
-    <div class="code">docker build -t dockerfile-optimizado .
-docker images</div>
+    <h2>10. Tercer enfoque: multi-stage con Spring Boot</h2>
+
+    <h3>10.1 Crear Dockerfile multi-stage</h3>
+    <p>Cree un archivo llamado <code>Dockerfile.multi</code>.</p>
+    <div class="code"># Etapa 1: build
+FROM maven:3.9-eclipse-temurin-21 AS build
+
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Etapa 2: runtime
+FROM eclipse-temurin:21-jdk-alpine
+
+WORKDIR /app
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]</div>
+
+    <h3>10.2 Construir imagen multi-stage</h3>
+    <div class="code">docker build -f Dockerfile.multi -t spring-docker-multi .</div>
+
+    <h3>10.3 Ejecutar contenedor</h3>
+    <div class="code">docker run --rm -p 8080:8080 spring-docker-multi</div>
+
+    <h3>10.4 Verificar endpoint</h3>
+    <div class="code">http://localhost:8080/hola</div>
+
+    <h3>10.5 Revisar tamaño</h3>
+    <div class="code">docker images</div>
 
     <div class="box">
-      <p><strong>Actividad 4.</strong> Compara ambas imágenes:</p>
+      <p><strong>Actividad 5.</strong> Responda:</p>
       <ol>
-        <li>¿Cuál es más grande?</li>
-        <li>¿Cuál es más adecuada para despliegue en producción?</li>
-        <li>¿Cuál descargaría más rápido en un servidor o pipeline?</li>
-        <li>¿Qué evidencias encontraste al revisar el tamaño o el proceso de build?</li>
+        <li>¿Qué ocurre en la etapa <strong>build</strong>?</li>
+        <li>¿Qué ocurre en la etapa <strong>runtime</strong>?</li>
+        <li>¿Qué se copia exactamente de una etapa a la otra?</li>
+        <li>¿Qué elementos no quedan en la imagen final?</li>
+        <li>¿Qué ventaja tiene multi-stage frente a compilar y ejecutar en una sola etapa?</li>
       </ol>
     </div>
 
-    <h3>Paso 5. Seguridad y despliegue en producción</h3>
-    <p>
-      En un entorno productivo, una imagen debería contener únicamente lo necesario para ejecutar la aplicación.
-      Incluir herramientas como Maven o archivos de compilación amplía la superficie de ataque y complica el mantenimiento.
-    </p>
-
-    <div class="box">
-      <p><strong>Actividad 5.</strong> Responde de forma argumentada:</p>
-      <ol>
-        <li>¿Cómo impacta la separación build/runtime en la seguridad?</li>
-        <li>¿Cómo impacta esta separación en el despliegue en entornos productivos?</li>
-        <li>¿Por qué una imagen más pequeña suele ser más conveniente para producción?</li>
-      </ol>
-    </div>
-
-    <h3>Paso 6. Comparación estructurada</h3>
-    <p>
-      Completa la siguiente tabla comparando ambos enfoques.
-    </p>
+    <h2>11. Comparación de enfoques</h2>
+    <p>Complete la siguiente tabla usando sus evidencias.</p>
 
     <table>
       <thead>
         <tr>
           <th>Criterio</th>
-          <th>Compilación dentro del Dockerfile</th>
-          <th>Compilación separada de la ejecución</th>
+          <th>Compila dentro del Dockerfile</th>
+          <th>Compilación separada</th>
+          <th>Multi-stage</th>
         </tr>
       </thead>
       <tbody>
@@ -325,9 +396,11 @@ docker images</div>
           <td><strong>Tamaño de imagen</strong></td>
           <td>...</td>
           <td>...</td>
+          <td>...</td>
         </tr>
         <tr>
           <td><strong>Tiempo de build</strong></td>
+          <td>...</td>
           <td>...</td>
           <td>...</td>
         </tr>
@@ -335,14 +408,11 @@ docker images</div>
           <td><strong>Tiempo de despliegue</strong></td>
           <td>...</td>
           <td>...</td>
+          <td>...</td>
         </tr>
         <tr>
           <td><strong>Seguridad</strong></td>
           <td>...</td>
-          <td>...</td>
-        </tr>
-        <tr>
-          <td><strong>Reproducibilidad</strong></td>
           <td>...</td>
           <td>...</td>
         </tr>
@@ -350,137 +420,92 @@ docker images</div>
           <td><strong>Adecuación para producción</strong></td>
           <td>...</td>
           <td>...</td>
+          <td>...</td>
         </tr>
       </tbody>
     </table>
 
-    <h3>Paso 7. Introducción a Multi-Stage</h3>
-    <p>
-      Una alternativa más completa consiste en usar un <strong>Dockerfile multi-stage</strong>. Este enfoque permite
-      compilar la aplicación en una primera etapa y copiar únicamente el artefacto necesario a una segunda etapa,
-      destinada a la ejecución.
-    </p>
-
-    <div class="code"># Etapa 1: build
-FROM maven:3.9-eclipse-temurin-21 AS build
-
-WORKDIR /app
-COPY . .
-RUN mvn clean package
-
-# Etapa 2: runtime
-FROM eclipse-temurin:21-jdk-alpine
-
-WORKDIR /app
-COPY --from=build /app/target/app.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "app.jar"]</div>
-
     <div class="box">
-      <p><strong>Actividad 6.</strong> Explica:</p>
+      <p><strong>Actividad 6.</strong> Con base en la tabla, explique:</p>
       <ol>
-        <li>¿Qué ocurre en la etapa <strong>build</strong>?</li>
-        <li>¿Qué ocurre en la etapa <strong>runtime</strong>?</li>
-        <li>¿Qué elementos pasan de una etapa a otra?</li>
-        <li>¿Qué elementos no quedan en la imagen final?</li>
-        <li>¿Qué ventajas ofrece multi-stage frente al Dockerfile que compila y ejecuta todo en la misma etapa?</li>
+        <li>¿Qué sucede con el tamaño de una imagen si incluimos la compilación dentro del Dockerfile?</li>
+        <li>¿Qué ventajas tiene separar la compilación del proceso de ejecución?</li>
+        <li>¿Cómo impacta esta separación en la seguridad y en el despliegue?</li>
       </ol>
     </div>
 
-    <h3>Paso 8. Ejemplo simple de comprensión</h3>
+    <h2>12. Persistencia con volúmenes</h2>
+
+    <h3>12.1 Simular persistencia de datos</h3>
     <p>
-      Suponga que un equipo tiene una aplicación Java sencilla. El equipo quiere:
+      Para observar el comportamiento de los volúmenes, cree un volumen y escriba un archivo desde un contenedor.
     </p>
-    <ul>
-      <li>Compilar con Maven</li>
-      <li>Generar un archivo <code>.jar</code></li>
-      <li>Desplegar solo lo necesario en producción</li>
-    </ul>
+    <div class="code">docker volume create datos-spring-lab
+
+docker run --rm -v datos-spring-lab:/datos alpine sh -c "echo 'Persistencia Spring Boot' > /datos/info.txt"</div>
+
+    <h3>12.2 Verificar el contenido del volumen</h3>
+    <div class="code">docker run --rm -v datos-spring-lab:/datos alpine cat /datos/info.txt</div>
+
+    <div class="note">
+      El archivo sigue existiendo aunque el contenedor anterior ya no esté. Eso demuestra persistencia fuera del ciclo de vida del contenedor.
+    </div>
 
     <div class="box">
-      <p><strong>Actividad 7.</strong> Responde:</p>
+      <p><strong>Actividad 7.</strong> Responda:</p>
       <ol>
-        <li>¿Por qué el enfoque multi-stage es apropiado para este escenario?</li>
-        <li>¿Qué problema se evita al no llevar Maven a la imagen final?</li>
-        <li>¿Qué beneficios concretos obtiene el equipo en producción?</li>
+        <li>¿Qué problema resuelven los volúmenes?</li>
+        <li>¿Qué ocurriría si una base de datos en Docker no usa volumen?</li>
+        <li>¿Por qué este concepto es importante en aplicaciones empresariales?</li>
       </ol>
     </div>
 
-    <h3>Paso 9. Persistencia con volúmenes</h3>
+    <h2>13. Comunicación entre contenedores con redes</h2>
+
+    <h3>13.1 Crear una red Docker</h3>
+    <div class="code">docker network create red-spring-lab</div>
+
+    <h3>13.2 Levantar un contenedor de base de datos</h3>
+    <div class="code">docker run -d --name db-lab --network red-spring-lab -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_DATABASE=demo mysql:8.0</div>
+
+    <h3>13.3 Probar conectividad desde otro contenedor</h3>
     <p>
-      Cuando un contenedor maneja datos, como ocurre con una base de datos, un archivo de configuración o un repositorio
-      de información, es necesario decidir dónde se almacenará esa información. Si todo queda dentro del contenedor,
-      al eliminarlo los datos podrían perderse.
+      Para no modificar aún la aplicación Spring Boot, haga una prueba conceptual de conectividad desde otro contenedor:
     </p>
+    <div class="code">docker run --rm --network red-spring-lab alpine sh -c "ping -c 2 db-lab"</div>
 
-    <div class="code">docker run -v datos:/var/lib/mysql mysql:8.0</div>
-
-    <div class="box">
-      <p><strong>Actividad 8.</strong> Responde:</p>
-      <ol>
-        <li>¿Qué problema resuelven los volúmenes en Docker?</li>
-        <li>¿Qué podría pasar si una base de datos corre en un contenedor sin volumen?</li>
-        <li>¿Por qué se dice que los volúmenes separan los datos del ciclo de vida del contenedor?</li>
-        <li>¿En qué escenarios reales considerarías obligatorio usar volúmenes?</li>
-      </ol>
+    <div class="note">
+      Ambos contenedores pueden encontrarse por nombre porque pertenecen a la misma red Docker.
     </div>
 
-    <h3>Paso 10. Comunicación mediante redes</h3>
-    <p>
-      En aplicaciones con varios servicios, como una API y una base de datos, los contenedores deben poder comunicarse.
-      Para ello Docker permite crear redes que facilitan la interacción entre ellos.
-    </p>
-
-    <div class="code">docker network create red-app
-
-docker run -d --name db --network red-app mysql:8.0
-docker run -d --name app --network red-app mi-app</div>
-
     <div class="box">
-      <p><strong>Actividad 9.</strong> Responde:</p>
+      <p><strong>Actividad 8.</strong> Responda:</p>
       <ol>
         <li>¿Para qué sirven las redes en Docker?</li>
-        <li>¿Por qué no basta con que los contenedores estén simplemente ejecutándose?</li>
-        <li>¿Qué ventajas aporta una red Docker cuando una aplicación necesita conectarse a una base de datos?</li>
-        <li>¿Qué riesgos o limitaciones podrían surgir si no se configura correctamente la comunicación entre contenedores?</li>
+        <li>¿Por qué una aplicación Spring Boot que usa base de datos necesita este concepto?</li>
+        <li>¿Qué ventaja tiene poder referirse al contenedor por nombre, por ejemplo <code>db-lab</code>?</li>
       </ol>
     </div>
 
-    <h3>Paso 11. Caso de análisis aplicado</h3>
+    <h2>14. Caso integrador</h2>
     <p>
-      Una empresa reporta que sus imágenes Docker pesan demasiado, que cada despliegue tarda varios minutos y que además
-      pierde información cuando reinicia ciertos contenedores. También ha detectado que algunos servicios no logran
-      conectarse entre sí.
+      Una empresa reporta que su aplicación Spring Boot tarda demasiado en desplegarse, sus imágenes pesan mucho,
+      pierde información cuando elimina contenedores y algunos servicios no logran conectarse entre sí.
     </p>
 
     <div class="box">
-      <p><strong>Actividad 10.</strong> Analiza el caso y propón una solución:</p>
+      <p><strong>Actividad 9.</strong> Analice y responda:</p>
       <ol>
-        <li>¿Qué está haciendo mal la empresa respecto a la construcción de imágenes?</li>
-        <li>¿Qué cambio recomendarías implementar frente al build y runtime?</li>
-        <li>¿Conviene usar compilación separada o multi-stage? Justifica.</li>
+        <li>¿Qué errores identifica en la construcción de sus imágenes?</li>
+        <li>¿Qué cambio recomendaría respecto a build y runtime?</li>
+        <li>¿Usaría compilación separada o multi-stage? Justifique.</li>
         <li>¿Qué papel cumplen los volúmenes en la solución?</li>
         <li>¿Qué papel cumplen las redes en la solución?</li>
-        <li>¿Qué mejoraría en términos de tamaño, seguridad, persistencia y despliegue?</li>
+        <li>¿Qué mejoraría en tamaño, seguridad, persistencia y despliegue?</li>
       </ol>
     </div>
 
-    <h3>Paso 12. Conclusión individual</h3>
-    <p>
-      Redacta una conclusión breve, entre 8 y 12 líneas, respondiendo a la siguiente idea:
-    </p>
-
-    <div class="box">
-      <p><strong>Actividad 11.</strong></p>
-      <p>
-        Explica por qué en Docker no solo importa que la aplicación funcione, sino también
-        <strong>cómo se construye la imagen</strong>, cómo se manejan los <strong>datos</strong> y cómo se
-        garantiza la <strong>comunicación entre servicios</strong>, especialmente cuando se piensa en seguridad,
-        rendimiento y despliegue en producción.
-      </p>
-    </div>
-
-    <h2>7. Preguntas clave del taller</h2>
+    <h2>15. Preguntas guía de reflexión</h2>
     <ol>
       <li>¿Por qué no compilar en Dockerfile?</li>
       <li>¿Qué sucede con el tamaño de una imagen si incluimos la compilación dentro del Dockerfile?</li>
@@ -490,7 +515,7 @@ docker run -d --name app --network red-app mi-app</div>
       <li>¿Qué función cumplen las redes cuando varios contenedores deben comunicarse?</li>
     </ol>
 
-    <h2>8. Entregables</h2>
+    <h2>16. Entregables</h2>
     <table>
       <thead>
         <tr>
@@ -501,49 +526,47 @@ docker run -d --name app --network red-app mi-app</div>
       </thead>
       <tbody>
         <tr>
-          <td><strong>E1.</strong> Desarrollo del taller</td>
+          <td><strong>E1.</strong> Desarrollo del laboratorio</td>
           <td>PDF</td>
-          <td>Respuestas completas a las actividades 1 a 11, con argumentación técnica y tablas comparativas diligenciadas.</td>
+          <td>Respuestas completas a las actividades 1 a 9 y tabla comparativa diligenciada.</td>
         </tr>
         <tr>
-          <td><strong>E2.</strong> Evidencia del análisis</td>
-          <td>Incluida en el PDF</td>
-          <td>Capturas o resultados de comandos como <code>docker images</code>, <code>docker build</code>, <code>docker run</code>, <code>docker volume ls</code> o <code>docker network ls</code>, si el estudiante realizó pruebas.</td>
+          <td><strong>E2.</strong> Evidencias</td>
+          <td>Incluidas en el PDF</td>
+          <td>Capturas de compilación local, build de imágenes, <code>docker images</code>, ejecución de contenedores, volúmenes y redes.</td>
         </tr>
         <tr>
-          <td><strong>E3.</strong> Conclusión individual</td>
+          <td><strong>E3.</strong> Conclusión final</td>
           <td>Incluida en el PDF</td>
-          <td>Reflexión final sobre tamaño, seguridad, despliegue, persistencia, conectividad y multi-stage.</td>
+          <td>Reflexión individual sobre tamaño, seguridad, despliegue, multi-stage, volúmenes y redes.</td>
         </tr>
       </tbody>
     </table>
 
-    <h2>9. Recomendaciones para el desarrollo</h2>
-    <ul>
-      <li>Usa lenguaje técnico, pero claro.</li>
-      <li>No te limites a responder “sí” o “no”; justifica cada respuesta.</li>
-      <li>Relaciona lo trabajado con las buenas prácticas vistas en clase.</li>
-      <li>Explica siempre el impacto en producción, no solo en desarrollo.</li>
-      <li>En multi-stage, destaca qué se queda y qué no se queda en la imagen final.</li>
-      <li>En volúmenes, explica claramente qué sucede con los datos cuando el contenedor se elimina.</li>
-      <li>En redes, explica claramente cómo y por qué dos contenedores logran comunicarse.</li>
-      <li>Si realizas pruebas prácticas, incluye evidencia para respaldar tus comparaciones.</li>
-    </ul>
-
+    <h2>17. Conclusión individual</h2>
+    <p>Redacte una conclusión breve, entre 8 y 12 líneas, sobre la siguiente idea:</p>
     <div class="box">
-      <p><strong>Cierre del taller:</strong></p>
       <p>
-        En Docker no solo importa que la aplicación funcione, sino cómo se construye la imagen,
-        cómo se gestionan los datos y cómo se conectan los servicios, ya que todo ello impacta
-        directamente el tamaño, la seguridad, la persistencia, la eficiencia y el comportamiento
-        del despliegue en producción.
+        En Docker no solo importa que una aplicación Spring Boot funcione, sino también cómo se construye la imagen,
+        cómo se gestionan los datos y cómo se comunican los servicios, ya que todo ello impacta directamente
+        la seguridad, el tamaño, la persistencia y el despliegue en producción.
       </p>
     </div>
 
+    <h2>18. Recomendaciones finales</h2>
+    <ul>
+      <li>Use lenguaje técnico, pero claro.</li>
+      <li>Justifique cada respuesta.</li>
+      <li>Relacione los conceptos con situaciones reales.</li>
+      <li>No se limite a copiar salidas de consola; interprételas.</li>
+      <li>Si una prueba falla, documente qué intentó y qué observó.</li>
+      <li>Sea consistente con el nombre del archivo <code>.jar</code> generado por su proyecto.</li>
+    </ul>
+
     <p class="muted" style="margin-top:12px;">
-      Nota: Este taller complementa el trabajo previo sobre Docker y busca afianzar la comprensión de
-      la optimización de imágenes, la separación entre compilación y ejecución, el uso de multi-stage,
-      y la importancia de volúmenes y redes como prácticas fundamentales en escenarios reales.
+      Nota: Este laboratorio guiado complementa el trabajo sobre Docker y busca afianzar la comprensión
+      de la optimización de imágenes, la separación entre compilación y ejecución, el uso de multi-stage,
+      y la importancia de volúmenes y redes en aplicaciones Spring Boot.
     </p>
   </main>
 
